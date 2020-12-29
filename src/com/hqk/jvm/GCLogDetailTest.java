@@ -5,8 +5,33 @@ package com.hqk.jvm;
  * 测试各类垃圾回收器
  *
  * VM参数设置
- * -Xms20M -Xmx20M -Xmn10M -XX:+PrintGCDetails -XX:+PrintGCDateStamps {定义垃圾收集器}
- * 可以结合
+ * 堆的最小空间 / 最大空间 / 新生代空间 , 打印GC日志 ,打印GC执行时间
+ * -Xms20M -Xmx20M -Xmn10M -XX:+PrintGCDetails -XX:+PrintGCDateStamps
+ * 可以结合jvisualvm.exe 工具查看JVM的内存消耗情况
+ *
+ * 如果已经知道当前应用程序的内存最小/最大值,那么两个参数设置成一样的好处
+ * 就是为了避免在生产环境由于heap内存扩大或缩小导致应用停顿，降低延迟，同时避免每次垃圾回收完成后JVM重新分配内存。
+ *
+ * Serial GC
+ *  -XX:+UseSerialGC 标记算法 单线程 stop-the-world 进行垃圾回收
+ *  年轻代将使用标记-复制(mark-copy)算法，老年代使用标记-清理- 压缩(mark-sweep-compact)算法
+ *
+ * Parallel GC
+ *  -XX:+UseParallelGC
+ *  年轻代将使用标记-复制(mark-copy)算法，老年代使用标记- 清理-压缩(mark-sweep-compact)算法，
+ *  并且均以多线程，stop-the-world 的方式运行垃圾收集过程，还可通过 -XX:ParallelGCThreads=N 来指定运行垃圾收集过程的线程数，默认为 CPU 核数。
+ *
+ * CMS
+ *  -XX: +UseConcMarkSweepGC
+ *  年轻代将采用并行，stop-the-world，标记-复制的收集算法，老年代则采用并发-标记-清理(Concurrent Mark-Sweep)的收集算法，该算法有利于降低应用暂定时间
+ *
+ * G1
+ *  -XX:+UseG1GC
+ *  每个区域都可以被称为 Eden 区，Survivor 区，或 Old 区，逻辑上 Eden 区+Survivor 区为 年轻代，Old 区则为老年代，从而避免了每次 GC 时，回收整个堆空间.
+ *
+ *逃逸分析
+ *  -XX:+PrintEscapeAnalysis
+ *
  */
 public class GCLogDetailTest {
     // 为了触发GC 初始化 1M

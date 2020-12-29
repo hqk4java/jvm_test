@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 /**
  * @author hqk
- * 测试引用
+ * 测试对象引用
  * 20201225
  */
 public class TestReference {
@@ -62,7 +62,6 @@ public class TestReference {
      * 虚引用  == > 幻影引用
      * NIO(直接内存，不在JVM堆内存的就是直接内存，也就是除JVM外的操作系统内存)常用 netty框架就是用这个
      * 回收是通过开启一个线程将垃圾对象放到专门的Queue 队列回收
-     * 这块掌握不是很好，马士兵JVM有讲到
      */
     private static void referenceQueueMethod(){
         ReferenceQueue queue = new ReferenceQueue();
